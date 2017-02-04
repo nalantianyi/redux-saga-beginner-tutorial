@@ -1,6 +1,21 @@
 /**
  * Created by nalantianyi on 2017/2/4.
  */
-export function* helloSaga() {
-    console.log('hello Sagas!');
+import {takeEvery} from 'redux-saga';
+import {put} from 'redux-saga/effects';
+
+export const delay = ms => new Promise(resolve => setTimeout(resolve), ms);
+
+export function* incrementAsync() {
+    yield delay(1000);
+    yield put({type: 'INCREMENT'});
+}
+export function* watchIncrementAsync() {
+    yield * takeEvery('INCREMENT_ASYNC', incrementAsync);
+}
+
+export default function* rootSaga() {
+    yield [
+        watchIncrementAsync()
+    ]
 }
